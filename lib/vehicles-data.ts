@@ -177,17 +177,17 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: '12',
-    name: 'Renault Duster',
-    brand: 'Renault',
-    model: 'Duster Iconic',
-    year: 2024,
+    name: 'Chevrolet Spin',
+    brand: 'Chevrolet',
+    model: 'Spin LT',
+    year: 2019,
     price: 35000000,
     type: 'camioneta',
-    condition: '0km',
+    condition: '100km',
     kilometers: 0,
     fuel: 'Nafta',
     transmission: 'CVT',
-    image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80'
+    image: 'https://www.deruedas.com.ar/images/autos/Chevrolet-Spin-2019/645/645366_1_im.jpg?edit=2'
   }
 ]
 

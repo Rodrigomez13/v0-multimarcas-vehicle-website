@@ -110,10 +110,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-foreground mb-4">Contacto</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Av. Principal 1234</li>
-              <li>Buenos Aires, Argentina</li>
-              <li>+54 11 1234-5678</li>
-              <li>ventas@multimarcas.com</li>
+              <li>Fotherningham 2186</li>
+              <li>Formosa, Argentina</li>
+              <li>+54 3704843608</li>
+              <li>ventas@gfmultimarcas.com</li>
             </ul>
           </div>
         </div>

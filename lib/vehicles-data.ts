@@ -181,7 +181,7 @@ export const vehicles: Vehicle[] = [
     brand: 'Chevrolet',
     model: 'Spin LT',
     year: 2019,
-    price: 35000000,
+    price: 12000000,
     type: 'camioneta',
     condition: 'Buen estado',
     kilometers: 140,

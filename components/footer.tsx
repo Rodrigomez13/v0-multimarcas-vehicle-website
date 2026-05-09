@@ -1,0 +1,138 @@
+import Image from "next/image"
+import Link from "next/link"
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react"
+
+export function Footer() {
+  return (
+    <footer className="bg-card border-t border-border">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="space-y-4">
+            <Image
+              src="/logo.jpg"
+              alt="MultiMarcas Logo"
+              width={150}
+              height={50}
+              className="h-10 w-auto object-contain"
+            />
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Tu concesionaria de confianza. Más de 15 años ofreciendo los mejores 
+              vehículos al mejor precio.
+            </p>
+            <div className="flex gap-4">
+              <a 
+                href="#" 
+                className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-4 w-4" />
+              </a>
+              <a 
+                href="#" 
+                className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
+              <a 
+                href="#" 
+                className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter className="h-4 w-4" />
+              </a>
+              <a 
+                href="#" 
+                className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                aria-label="YouTube"
+              >
+                <Youtube className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Enlaces Rápidos</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link href="#catalogo" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Catálogo
+                </Link>
+              </li>
+              <li>
+                <Link href="#nosotros" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Nosotros
+                </Link>
+              </li>
+              <li>
+                <Link href="#contacto" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Contacto
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Vehicles */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Vehículos</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#catalogo" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Autos 0km
+                </Link>
+              </li>
+              <li>
+                <Link href="#catalogo" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Autos Usados
+                </Link>
+              </li>
+              <li>
+                <Link href="#catalogo" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Motos
+                </Link>
+              </li>
+              <li>
+                <Link href="#catalogo" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Camionetas
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-semibold text-foreground mb-4">Contacto</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>Av. Principal 1234</li>
+              <li>Buenos Aires, Argentina</li>
+              <li>+54 11 1234-5678</li>
+              <li>ventas@multimarcas.com</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-muted-foreground text-sm">
+            © {new Date().getFullYear()} MultiMarcas. Todos los derechos reservados.
+          </p>
+          <div className="flex gap-6 text-sm">
+            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              Términos y Condiciones
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              Privacidad
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}

@@ -183,8 +183,8 @@ export const vehicles: Vehicle[] = [
     year: 2019,
     price: 35000000,
     type: 'camioneta',
-    condition: '100km',
-    kilometers: 0,
+    condition: 'Buen estado',
+    kilometers: 140,
     fuel: 'Nafta',
     transmission: 'CVT',
     image: 'https://www.deruedas.com.ar/images/autos/Chevrolet-Spin-2019/645/645366_1_im.jpg?edit=2'

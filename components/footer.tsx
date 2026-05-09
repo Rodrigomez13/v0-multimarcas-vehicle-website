@@ -9,13 +9,21 @@ export function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <Image
-              src="/logo.jpg"
-              alt="MultiMarcas Logo"
-              width={150}
-              height={50}
-              className="h-10 w-auto object-contain"
-            />
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo-gf.jpeg"
+                alt="GF MultiMarcas Logo"
+                width={56}
+                height={56}
+                className="h-14 w-14 rounded-full object-cover"
+              />
+              <div>
+                <span className="text-xl font-bold">
+                  <span className="text-primary">GF</span>
+                  <span className="text-accent"> MultiMarcas</span>
+                </span>
+              </div>
+            </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Tu concesionaria de confianza. Más de 15 años ofreciendo los mejores 
               vehículos al mejor precio.
@@ -121,7 +129,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} MultiMarcas. Todos los derechos reservados.
+            © {new Date().getFullYear()} GF MultiMarcas. Todos los derechos reservados.
           </p>
           <div className="flex gap-6 text-sm">
             <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">

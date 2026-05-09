@@ -6,9 +6,9 @@ import './globals.css'
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: 'MultiMarcas | Venta de Vehículos 0km y Usados',
-  description: 'Tu concesionaria de confianza. Venta de motos, autos y camionetas nuevos y usados. Encontrá tu próximo vehículo al mejor precio.',
-  keywords: ['autos', 'motos', 'camionetas', '0km', 'usados', 'concesionaria', 'vehículos'],
+  title: 'GF MultiMarcas | Venta de Vehículos 0km y Usados',
+  description: 'GF MultiMarcas - Tu concesionaria de confianza en Formosa. Venta de motos, autos y camionetas nuevos y usados. Encontrá tu próximo vehículo al mejor precio.',
+  keywords: ['autos', 'motos', 'camionetas', '0km', 'usados', 'concesionaria', 'vehículos', 'GF MultiMarcas', 'Formosa'],
 }
 
 export default function RootLayout({

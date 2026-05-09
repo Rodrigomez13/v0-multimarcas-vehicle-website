@@ -34,14 +34,20 @@ export function Header() {
       {/* Main header */}
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/logo.jpg"
-              alt="MultiMarcas Logo"
-              width={180}
-              height={60}
-              className="h-12 w-auto object-contain"
+              src="/logo-gf.jpeg"
+              alt="GF MultiMarcas Logo"
+              width={56}
+              height={56}
+              className="h-14 w-14 rounded-full object-cover"
             />
+            <div className="hidden sm:block">
+              <span className="text-xl font-bold">
+                <span className="text-primary">GF</span>
+                <span className="text-accent"> MultiMarcas</span>
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

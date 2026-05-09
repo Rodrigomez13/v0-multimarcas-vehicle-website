@@ -21,9 +21,18 @@ export function Hero() {
               </span>
             </div>
             
+            <div className="flex items-center gap-4 mb-4">
+              <Image
+                src="/logo-gf.jpeg"
+                alt="GF MultiMarcas Logo"
+                width={80}
+                height={80}
+                className="h-20 w-20 rounded-full object-cover shadow-lg shadow-primary/20"
+              />
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-balance">
-              <span className="text-primary">Multi</span>
-              <span className="text-accent">Marcas</span>
+              <span className="text-primary">GF</span>
+              <span className="text-accent"> MultiMarcas</span>
               <br />
               <span className="text-foreground">Vehículos de Calidad</span>
             </h1>

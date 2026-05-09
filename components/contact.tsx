@@ -28,7 +28,7 @@ export function Contact() {
             <span className="text-primary">Contactanos</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            ¿Tenés alguna pregunta? Estamos acá para ayudarte. Completá el formulario 
+            ¿Tenés alguna pregunta? Estamos acá para ayudarte. Completá el formulario
             o contactanos directamente.
           </p>
         </div>
@@ -38,7 +38,7 @@ export function Contact() {
           <div className="space-y-8">
             <div>
               <h3 className="text-xl font-semibold mb-6 text-foreground">Información de Contacto</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-4 p-4 bg-card border border-border rounded-lg">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -87,9 +87,9 @@ export function Contact() {
             </div>
 
             {/* WhatsApp Button */}
-            <a 
-              href="https://wa.me/543704843608" 
-              target="_blank" 
+            <a
+              href="https://wa.me/543704843608"
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#20BA5C] transition-colors"
             >
@@ -101,7 +101,7 @@ export function Contact() {
           {/* Contact Form */}
           <div className="bg-card border border-border rounded-lg p-6 lg:p-8">
             <h3 className="text-xl font-semibold mb-6 text-foreground">Envianos un mensaje</h3>
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
@@ -162,8 +162,8 @@ export function Contact() {
                 />
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 <Send className="h-4 w-4 mr-2" />

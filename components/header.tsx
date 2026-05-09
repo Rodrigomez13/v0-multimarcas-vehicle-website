@@ -17,16 +17,16 @@ export function Header() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-primary" />
-              +54 11 1234-5678
+              +54 370484368
             </span>
             <span className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-primary" />
-              ventas@multimarcas.com
+              ventas@gfmultimarcas.com
             </span>
           </div>
           <span className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Av. Principal 1234, Buenos Aires
+            Fotheringham, Formosa
           </span>
         </div>
       </div>

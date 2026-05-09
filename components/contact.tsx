@@ -46,8 +46,8 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="font-medium text-foreground">Teléfono</p>
-                    <p className="text-muted-foreground">+54 11 1234-5678</p>
-                    <p className="text-muted-foreground">+54 11 8765-4321</p>
+                    <p className="text-muted-foreground">+54 3704843567</p>
+                    <p className="text-muted-foreground">+54 3704843608</p>
                   </div>
                 </div>
 
@@ -57,8 +57,8 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="font-medium text-foreground">Email</p>
-                    <p className="text-muted-foreground">ventas@multimarcas.com</p>
-                    <p className="text-muted-foreground">info@multimarcas.com</p>
+                    <p className="text-muted-foreground">ventas@gfmultimarcas.com</p>
+                    <p className="text-muted-foreground">info@gfmultimarcas.com</p>
                   </div>
                 </div>
 
@@ -68,8 +68,8 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="font-medium text-foreground">Dirección</p>
-                    <p className="text-muted-foreground">Av. Principal 1234</p>
-                    <p className="text-muted-foreground">Buenos Aires, Argentina</p>
+                    <p className="text-muted-foreground">Fotherngham 2186</p>
+                    <p className="text-muted-foreground">Formosa, Argentina</p>
                   </div>
                 </div>
 
@@ -79,8 +79,8 @@ export function Contact() {
                   </div>
                   <div>
                     <p className="font-medium text-foreground">Horarios</p>
-                    <p className="text-muted-foreground">Lun - Vie: 9:00 - 19:00</p>
-                    <p className="text-muted-foreground">Sáb: 9:00 - 14:00</p>
+                    <p className="text-muted-foreground">Lun - Sab: 8:00 - 21:00</p>
+                    <p className="text-muted-foreground">Dom: 9:00 - 18:00</p>
                   </div>
                 </div>
               </div>
@@ -88,7 +88,7 @@ export function Contact() {
 
             {/* WhatsApp Button */}
             <a 
-              href="https://wa.me/5411123456789" 
+              href="https://wa.me/543704843608" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#20BA5C] transition-colors"
@@ -140,7 +140,7 @@ export function Contact() {
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="+54 11 1234-5678"
+                  placeholder="+54 3704843608"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="bg-input border-border"

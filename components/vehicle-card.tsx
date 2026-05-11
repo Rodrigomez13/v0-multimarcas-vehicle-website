@@ -5,10 +5,23 @@ import { Calendar, Fuel, Gauge, Settings } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { type Vehicle, formatPrice, formatKilometers } from "@/lib/vehicles-data"
+import type { Vehicle } from "@/lib/types"
 
 interface VehicleCardProps {
   vehicle: Vehicle
+}
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
+}
+
+function formatKilometers(km: number): string {
+  return new Intl.NumberFormat('es-AR').format(km) + ' km'
 }
 
 export function VehicleCard({ vehicle }: VehicleCardProps) {
@@ -18,12 +31,21 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
     camioneta: 'Camioneta'
   }
 
+  const phoneNumber = "543704123456"
+  const message = encodeURIComponent(
+    `Hola! Me interesa el ${vehicle.name} ${vehicle.year} que vi en su página web. ¿Podrían darme más información?`
+  )
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`
+
+  // Use a placeholder if no image is set
+  const imageUrl = vehicle.image_url || '/placeholder-vehicle.jpg'
+
   return (
     <Card className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300">
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
         <Image
-          src={vehicle.image}
+          src={imageUrl}
           alt={vehicle.name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -47,7 +69,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         </div>
 
         {/* Featured badge */}
-        {vehicle.featured && (
+        {vehicle.is_featured && (
           <Badge className="absolute top-3 right-3 bg-chart-1 text-primary-foreground">
             Destacado
           </Badge>
@@ -71,16 +93,20 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Gauge className="h-4 w-4" />
-            <span>{formatKilometers(vehicle.kilometers)}</span>
+            <span>{formatKilometers(vehicle.mileage || 0)}</span>
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Fuel className="h-4 w-4" />
-            <span>{vehicle.fuel}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Settings className="h-4 w-4" />
-            <span className="truncate">{vehicle.transmission}</span>
-          </div>
+          {vehicle.fuel && (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Fuel className="h-4 w-4" />
+              <span>{vehicle.fuel}</span>
+            </div>
+          )}
+          {vehicle.transmission && (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Settings className="h-4 w-4" />
+              <span className="truncate">{vehicle.transmission}</span>
+            </div>
+          )}
         </div>
 
         {/* Price and CTA */}
@@ -88,11 +114,17 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           <div>
             <p className="text-xs text-muted-foreground">Precio</p>
             <p className="text-xl font-bold text-primary">
-              {formatPrice(vehicle.price)}
+              {formatPrice(Number(vehicle.price))}
             </p>
           </div>
-          <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            Consultar
+          <Button 
+            size="sm" 
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            asChild
+          >
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+              Consultar
+            </a>
           </Button>
         </div>
       </CardContent>

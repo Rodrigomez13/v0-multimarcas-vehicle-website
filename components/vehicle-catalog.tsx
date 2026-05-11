@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { Search, Filter, Car, Bike } from "lucide-react"
+import { useState, useMemo, useEffect } from "react"
+import { Search, Filter, Car, Bike, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { vehicles, type VehicleType, type VehicleCondition } from "@/lib/vehicles-data"
 import { VehicleCard } from "./vehicle-card"
+import { createClient } from "@/lib/supabase/client"
+import type { Vehicle, VehicleType, VehicleCondition } from "@/lib/types"
 
 const vehicleTypes: { value: VehicleType | 'todos'; label: string; icon: React.ReactNode }[] = [
   { value: 'todos', label: 'Todos', icon: <Filter className="h-4 w-4" /> },
@@ -21,9 +22,31 @@ const conditionFilters: { value: VehicleCondition | 'todos'; label: string }[] =
 ]
 
 export function VehicleCatalog() {
+  const [vehicles, setVehicles] = useState<Vehicle[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [typeFilter, setTypeFilter] = useState<VehicleType | 'todos'>('todos')
   const [conditionFilter, setConditionFilter] = useState<VehicleCondition | 'todos'>('todos')
+
+  useEffect(() => {
+    async function fetchVehicles() {
+      const supabase = createClient()
+      const { data, error } = await supabase
+        .from('vehicles')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching vehicles:', error)
+      } else {
+        setVehicles(data || [])
+      }
+      setLoading(false)
+    }
+
+    fetchVehicles()
+  }, [])
 
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((vehicle) => {
@@ -37,7 +60,7 @@ export function VehicleCatalog() {
 
       return matchesSearch && matchesType && matchesCondition
     })
-  }, [searchQuery, typeFilter, conditionFilter])
+  }, [vehicles, searchQuery, typeFilter, conditionFilter])
 
   return (
     <section id="catalogo" className="py-20 bg-secondary/50">
@@ -111,8 +134,13 @@ export function VehicleCatalog() {
           Mostrando <span className="text-foreground font-medium">{filteredVehicles.length}</span> vehículos
         </p>
 
-        {/* Vehicle Grid */}
-        {filteredVehicles.length > 0 ? (
+        {/* Loading state */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+            <p className="text-muted-foreground">Cargando vehículos...</p>
+          </div>
+        ) : filteredVehicles.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredVehicles.map((vehicle) => (
               <VehicleCard key={vehicle.id} vehicle={vehicle} />
@@ -121,9 +149,12 @@ export function VehicleCatalog() {
         ) : (
           <div className="text-center py-16 bg-card border border-border rounded-lg">
             <Car className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No se encontraron vehículos</h3>
+            <h3 className="text-xl font-semibold mb-2">No hay vehículos disponibles</h3>
             <p className="text-muted-foreground">
-              Intentá con otros filtros o términos de búsqueda
+              {vehicles.length === 0 
+                ? "Todavía no se agregaron vehículos al catálogo"
+                : "Intentá con otros filtros o términos de búsqueda"
+              }
             </p>
           </div>
         )}

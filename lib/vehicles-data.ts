@@ -1,5 +1,5 @@
 export type VehicleType = 'auto' | 'moto' | 'camioneta'
-export type VehicleCondition = '0km' | 'usado'
+export type VehicleCondition = '0km' | 'usado'| 'Buen estado'
 
 export interface Vehicle {
   id: string
@@ -117,7 +117,7 @@ export const vehicles: Vehicle[] = [
     kilometers: 0,
     fuel: 'Nafta',
     transmission: 'Manual',
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80'
+    image: 'https://i.ibb.co/NgynLqPD/Whats-App-Image-2026-05-11-at-17-01-36-1.jpg'
   },
   {
     id: '8',
@@ -149,9 +149,9 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: '10',
-    name: 'Peugeot 208',
-    brand: 'Peugeot',
-    model: '208 Allure',
+    name: 'Ford',
+    brand: 'Ford',
+    model: 'Focus C PLUS',
     year: 2023,
     price: 19500000,
     type: 'auto',
@@ -159,7 +159,7 @@ export const vehicles: Vehicle[] = [
     kilometers: 18000,
     fuel: 'Nafta',
     transmission: 'Automática',
-    image: 'https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=800&q=80'
+    image: 'https://i.ibb.co/nqfq8Tw5/Ford-Focus2.png'
   },
   {
     id: '11',
@@ -187,7 +187,7 @@ export const vehicles: Vehicle[] = [
     kilometers: 140,
     fuel: 'Nafta',
     transmission: 'CVT',
-    image: 'https://www.deruedas.com.ar/images/autos/Chevrolet-Spin-2019/645/645366_1_im.jpg?edit=2'
+    image: 'https://i.ibb.co/v69ghR7s/Chevrolet-Spin.png'
   }
 ]
 

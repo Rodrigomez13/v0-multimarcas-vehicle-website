@@ -11,7 +11,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo-gf.jpeg"
+                src="/logo-gf-multimarcas-circular-transparente.png"
                 alt="GF MultiMarcas Logo"
                 width={56}
                 height={56}
@@ -118,7 +118,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-foreground mb-4">Contacto</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>Fotherningham 2186</li>
+              <li>Fotheringham 2186</li>
               <li>Formosa, Argentina</li>
               <li>+54 3704843608</li>
               <li>ventas@gfmultimarcas.com</li>

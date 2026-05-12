@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Search, Filter, Car, Bike } from "lucide-react"
+import { Search, Filter, Car, Bike, Loader } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { vehicles, type VehicleType, type VehicleCondition } from "@/lib/vehicles-data"
+import { type VehicleType, type VehicleCondition } from "@/lib/vehicles-data"
 import { VehicleCard } from "./vehicle-card"
+import { useVehicles } from "@/hooks/use-vehicles"
 
 const vehicleTypes: { value: VehicleType | 'todos'; label: string; icon: React.ReactNode }[] = [
   { value: 'todos', label: 'Todos', icon: <Filter className="h-4 w-4" /> },
@@ -21,6 +22,7 @@ const conditionFilters: { value: VehicleCondition | 'todos'; label: string }[] =
 ]
 
 export function VehicleCatalog() {
+  const { vehicles, loading, error } = useVehicles()
   const [searchQuery, setSearchQuery] = useState("")
   const [typeFilter, setTypeFilter] = useState<VehicleType | 'todos'>('todos')
   const [conditionFilter, setConditionFilter] = useState<VehicleCondition | 'todos'>('todos')
@@ -37,7 +39,7 @@ export function VehicleCatalog() {
 
       return matchesSearch && matchesType && matchesCondition
     })
-  }, [searchQuery, typeFilter, conditionFilter])
+  }, [vehicles, searchQuery, typeFilter, conditionFilter])
 
   return (
     <section id="catalogo" className="py-20 bg-secondary/50">
@@ -112,7 +114,16 @@ export function VehicleCatalog() {
         </p>
 
         {/* Vehicle Grid */}
-        {filteredVehicles.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-16 bg-card border border-border rounded-lg">
+            <Loader className="h-8 w-8 mx-auto animate-spin text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">Cargando vehículos...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-16 bg-card border border-border rounded-lg">
+            <p className="text-destructive">{error}</p>
+          </div>
+        ) : filteredVehicles.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredVehicles.map((vehicle) => (
               <VehicleCard key={vehicle.id} vehicle={vehicle} />

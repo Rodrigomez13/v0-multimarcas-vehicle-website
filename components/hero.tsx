@@ -23,7 +23,7 @@ export function Hero() {
             
             <div className="flex items-center gap-4 mb-4">
               <Image
-                src="/logo-gf.jpeg"
+                src="/logo-gf-multimarcas-circular-transparente.png"
                 alt="GF MultiMarcas Logo"
                 width={80}
                 height={80}
@@ -78,7 +78,7 @@ export function Hero() {
           <div className="relative hidden lg:block">
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80"
+                src="https://i.ibb.co/MkBBysz6/9ac7c69e-ad51-4716-851d-bf681d413e29.png"
                 alt="Vehículo de lujo"
                 fill
                 className="object-cover"

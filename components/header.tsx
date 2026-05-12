@@ -36,7 +36,7 @@ export function Header() {
         <nav className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/logo-gf.jpeg"
+              src="/logo-gf-multimarcas-circular-transparente.png"
               alt="GF MultiMarcas Logo"
               width={56}
               height={56}

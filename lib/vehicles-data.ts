@@ -20,9 +20,9 @@ export interface Vehicle {
 export const vehicles: Vehicle[] = [
   {
     id: '1',
-    name: 'Toyota Corolla Cross',
+    name: 'Toyota Hilux',
     brand: 'Toyota',
-    model: 'Corolla Cross SEG',
+    model: 'Hilux 4x2',
     year: 2024,
     price: 42500000,
     type: 'auto',
@@ -137,21 +137,21 @@ export const vehicles: Vehicle[] = [
     id: '9',
     name: 'Toyota Hilux',
     brand: 'Toyota',
-    model: 'Hilux SRX',
-    year: 2022,
-    price: 48000000,
+    model: 'Hilux DX 4x2',
+    year: 2017,
+    price: 35000000,
     type: 'camioneta',
     condition: 'usado',
-    kilometers: 38000,
+    kilometers: 140000,
     fuel: 'Diesel',
-    transmission: 'Automática',
-    image: 'https://images.unsplash.com/photo-1612544448445-b8232cff3b6c?w=800&q=80'
+    transmission: 'Manual',
+    image: 'https://i.ibb.co/B2vVBLkw/Hilux.png'
   },
   {
     id: '10',
-    name: 'Peugeot 208',
-    brand: 'Peugeot',
-    model: '208 Allure',
+    name: 'Ford Focus',
+    brand: 'Ford',
+    model: 'Focus',
     year: 2023,
     price: 19500000,
     type: 'auto',
@@ -159,7 +159,7 @@ export const vehicles: Vehicle[] = [
     kilometers: 18000,
     fuel: 'Nafta',
     transmission: 'Automática',
-    image: 'https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=800&q=80'
+    image: 'https://i.ibb.co/nqfq8Tw5/Ford-Focus2.png'
   },
   {
     id: '11',
@@ -183,11 +183,11 @@ export const vehicles: Vehicle[] = [
     year: 2019,
     price: 12000000,
     type: 'camioneta',
-    condition: 'Buen estado',
+    condition: 'usado',
     kilometers: 140,
     fuel: 'Nafta',
     transmission: 'CVT',
-    image: 'https://www.deruedas.com.ar/images/autos/Chevrolet-Spin-2019/645/645366_1_im.jpg?edit=2'
+    image: 'https://i.ibb.co/v69ghR7s/Chevrolet-Spin.png'
   }
 ]
 

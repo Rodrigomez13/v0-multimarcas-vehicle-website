@@ -145,7 +145,7 @@ export const vehicles: Vehicle[] = [
     kilometers: 38000,
     fuel: 'Diesel',
     transmission: 'Automática',
-    image: 'https://images.unsplash.com/photo-1612544448445-b8232cff3b6c?w=800&q=80'
+    image: 'https://i.ibb.co/B2vVBLkw/Hilux.png'
   },
   {
     id: '10',

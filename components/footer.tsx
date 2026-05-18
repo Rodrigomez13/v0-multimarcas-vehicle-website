@@ -84,6 +84,11 @@ export function Footer() {
                   Contacto
                 </Link>
               </li>
+              <li>
+                <Link href="/admin" className="text-muted-foreground hover:text-primary transition-colors text-sm opacity-60">
+                  Panel Admin
+                </Link>
+              </li>
             </ul>
           </div>
 

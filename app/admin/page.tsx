@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Vehicle } from '@/lib/vehicles-data'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -23,9 +24,44 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { Edit2, Trash2, Plus } from 'lucide-react'
+import { Edit2, Trash2, Plus, LogOut } from 'lucide-react'
 
 export default function AdminPanel() {
+  const router = useRouter()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Verificar autenticación
+    const authenticated = localStorage.getItem('adminAuthenticated')
+    const loginTime = localStorage.getItem('adminLoginTime')
+
+    if (authenticated === 'true' && loginTime) {
+      // Verificar si la sesión no ha expirado (24 horas)
+      const timeDiff = Date.now() - parseInt(loginTime)
+      const hours24 = 24 * 60 * 60 * 1000
+
+      if (timeDiff < hours24) {
+        setIsAuthenticated(true)
+      } else {
+        // Sesión expirada
+        localStorage.removeItem('adminAuthenticated')
+        localStorage.removeItem('adminLoginTime')
+        router.push('/admin/login')
+      }
+    } else {
+      router.push('/admin/login')
+    }
+
+    setIsLoading(false)
+  }, [router])
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminAuthenticated')
+    localStorage.removeItem('adminLoginTime')
+    router.push('/admin/login')
+  }
+
   const { vehicles, addVehicle, updateVehicle, deleteVehicle } = useVehicles()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -43,21 +79,6 @@ export default function AdminPanel() {
     image: '',
     featured: false
   })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : type === 'number' ? Number(value) : value
-    }))
-  }
-
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'year' || name === 'price' || name === 'kilometers' ? Number(value) : value
-    }))
-  }
 
   const resetForm = () => {
     setFormData({
@@ -77,23 +98,29 @@ export default function AdminPanel() {
     setEditingId(null)
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : type === 'number' ? parseFloat(value) || 0 : value
+    }))
+  }
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
     try {
-      const vehicleData = {
-        ...formData,
-        year: Number(formData.year),
-        price: Number(formData.price),
-        kilometers: Number(formData.kilometers)
-      }
-
       if (editingId) {
-        await updateVehicle(editingId, vehicleData)
+        await updateVehicle(editingId, formData)
       } else {
-        await addVehicle(vehicleData)
+        await addVehicle(formData)
       }
-
       setIsDialogOpen(false)
       resetForm()
     } catch (error) {
@@ -128,6 +155,21 @@ export default function AdminPanel() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Verificando acceso...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null // El useEffect ya redirige al login
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
@@ -136,195 +178,205 @@ export default function AdminPanel() {
             <h1 className="text-3xl font-bold">Panel Administrativo</h1>
             <p className="text-gray-600 mt-1">Gestiona tu catálogo de vehículos</p>
           </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                onClick={resetForm}
-                className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Nuevo Vehículo
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingId ? 'Editar Vehículo' : 'Agregar Nuevo Vehículo'}
-                </DialogTitle>
-                <DialogDescription>
-                  {editingId 
-                    ? 'Modifica los datos del vehículo y guarda los cambios' 
-                    : 'Completa el formulario para agregar un nuevo vehículo al catálogo'}
-                </DialogDescription>
-              </DialogHeader>
+          <div className="flex gap-4">
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Cerrar Sesión
+            </Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  onClick={resetForm}
+                  className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Nuevo Vehículo
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingId ? 'Editar Vehículo' : 'Agregar Nuevo Vehículo'}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {editingId
+                      ? 'Modifica los datos del vehículo y guarda los cambios'
+                      : 'Completa el formulario para agregar un nuevo vehículo al catálogo'}
+                  </DialogDescription>
+                </DialogHeader>
 
-              <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 py-4">
-                <div>
-                  <Label htmlFor="name">Nombre *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Ej: Toyota Corolla"
-                    required
-                  />
-                </div>
+                <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 py-4">
+                  <div>
+                    <Label htmlFor="name">Nombre *</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Ej: Toyota Corolla"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="brand">Marca *</Label>
-                  <Input
-                    id="brand"
-                    name="brand"
-                    value={formData.brand}
-                    onChange={handleChange}
-                    placeholder="Ej: Toyota"
-                    required
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="brand">Marca *</Label>
+                    <Input
+                      id="brand"
+                      name="brand"
+                      value={formData.brand}
+                      onChange={handleChange}
+                      placeholder="Ej: Toyota"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="model">Modelo *</Label>
-                  <Input
-                    id="model"
-                    name="model"
-                    value={formData.model}
-                    onChange={handleChange}
-                    placeholder="Ej: Corolla Cross"
-                    required
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="model">Modelo *</Label>
+                    <Input
+                      id="model"
+                      name="model"
+                      value={formData.model}
+                      onChange={handleChange}
+                      placeholder="Ej: Corolla Cross"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="year">Año</Label>
-                  <Input
-                    id="year"
-                    name="year"
-                    type="number"
-                    value={formData.year}
-                    onChange={handleChange}
-                    min="2000"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="year">Año</Label>
+                    <Input
+                      id="year"
+                      name="year"
+                      type="number"
+                      value={formData.year}
+                      onChange={handleChange}
+                      min="2000"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="price">Precio ($)</Label>
-                  <Input
-                    id="price"
-                    name="price"
-                    type="number"
-                    value={formData.price}
-                    onChange={handleChange}
-                    placeholder="Ej: 42500000"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="price">Precio ($)</Label>
+                    <Input
+                      id="price"
+                      name="price"
+                      type="number"
+                      value={formData.price}
+                      onChange={handleChange}
+                      placeholder="Ej: 42500000"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="type">Tipo</Label>
-                  <Select value={formData.type} onValueChange={(value) => handleSelectChange('type', value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="auto">Auto</SelectItem>
-                      <SelectItem value="moto">Moto</SelectItem>
-                      <SelectItem value="camioneta">Camioneta</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <div>
+                    <Label htmlFor="type">Tipo</Label>
+                    <Select value={formData.type} onValueChange={(value) => handleSelectChange('type', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="auto">Auto</SelectItem>
+                        <SelectItem value="moto">Moto</SelectItem>
+                        <SelectItem value="camioneta">Camioneta</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div>
-                  <Label htmlFor="condition">Condición</Label>
-                  <Select value={formData.condition} onValueChange={(value) => handleSelectChange('condition', value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0km">0km</SelectItem>
-                      <SelectItem value="usado">Usado</SelectItem>
-                      <SelectItem value="Buen estado">Buen estado</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <div>
+                    <Label htmlFor="condition">Condición</Label>
+                    <Select value={formData.condition} onValueChange={(value) => handleSelectChange('condition', value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0km">0km</SelectItem>
+                        <SelectItem value="usado">Usado</SelectItem>
+                        <SelectItem value="Buen estado">Buen estado</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div>
-                  <Label htmlFor="kilometers">Kilómetros</Label>
-                  <Input
-                    id="kilometers"
-                    name="kilometers"
-                    type="number"
-                    value={formData.kilometers}
-                    onChange={handleChange}
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="kilometers">Kilómetros</Label>
+                    <Input
+                      id="kilometers"
+                      name="kilometers"
+                      type="number"
+                      value={formData.kilometers}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="fuel">Combustible</Label>
-                  <Input
-                    id="fuel"
-                    name="fuel"
-                    value={formData.fuel}
-                    onChange={handleChange}
-                    placeholder="Ej: Nafta"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="fuel">Combustible</Label>
+                    <Input
+                      id="fuel"
+                      name="fuel"
+                      value={formData.fuel}
+                      onChange={handleChange}
+                      placeholder="Ej: Nafta"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="transmission">Transmisión</Label>
-                  <Input
-                    id="transmission"
-                    name="transmission"
-                    value={formData.transmission}
-                    onChange={handleChange}
-                    placeholder="Ej: Manual"
-                  />
-                </div>
+                  <div>
+                    <Label htmlFor="transmission">Transmisión</Label>
+                    <Input
+                      id="transmission"
+                      name="transmission"
+                      value={formData.transmission}
+                      onChange={handleChange}
+                      placeholder="Ej: Manual"
+                    />
+                  </div>
 
-                <div className="col-span-2">
-                  <Label htmlFor="image">URL de Imagen</Label>
-                  <Input
-                    id="image"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                  />
-                </div>
+                  <div className="col-span-2">
+                    <Label htmlFor="image">URL de Imagen</Label>
+                    <Input
+                      id="image"
+                      name="image"
+                      value={formData.image}
+                      onChange={handleChange}
+                      placeholder="https://..."
+                    />
+                  </div>
 
-                <div className="col-span-2 flex items-center gap-2">
-                  <input
-                    id="featured"
-                    name="featured"
-                    type="checkbox"
-                    checked={formData.featured}
-                    onChange={handleChange}
-                    className="w-4 h-4 rounded border-gray-300"
-                  />
-                  <Label htmlFor="featured" className="mb-0">Destacado</Label>
-                </div>
+                  <div className="col-span-2 flex items-center gap-2">
+                    <input
+                      id="featured"
+                      name="featured"
+                      type="checkbox"
+                      checked={formData.featured}
+                      onChange={handleChange}
+                      className="w-4 h-4 rounded border-gray-300"
+                    />
+                    <Label htmlFor="featured" className="mb-0">Destacado</Label>
+                  </div>
 
-                <div className="col-span-2 flex gap-2">
-                  <Button 
-                    type="submit" 
-                    className="flex-1 bg-blue-600 hover:bg-blue-700"
-                  >
-                    {editingId ? 'Guardar Cambios' : 'Agregar Vehículo'}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      setIsDialogOpen(false)
-                      resetForm()
-                    }}
-                    className="flex-1"
-                  >
-                    Cancelar
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
+                  <div className="col-span-2 flex gap-2">
+                    <Button
+                      type="submit"
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                    >
+                      {editingId ? 'Guardar Cambios' : 'Agregar Vehículo'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setIsDialogOpen(false)
+                        resetForm()
+                      }}
+                      className="flex-1"
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         {/* Lista de vehículos */}
@@ -360,8 +412,8 @@ export default function AdminPanel() {
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                          vehicle.condition === '0km' 
-                            ? 'bg-green-100 text-green-800' 
+                          vehicle.condition === '0km'
+                            ? 'bg-green-100 text-green-800'
                             : 'bg-orange-100 text-orange-800'
                         }`}>
                           {vehicle.condition}
